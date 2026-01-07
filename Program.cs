@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference(options => 
     {
         options
-            .WithTitle("Users Microservice API")
+            .WithTitle("API del Microservicio de Usuarios")
             .WithTheme(ScalarTheme.Mars)
             .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
     });

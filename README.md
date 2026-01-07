@@ -1,72 +1,72 @@
-# Users Microservice
+# Microservicio de Usuarios
 
-This microservice handles user management, profiles, and authentication events within the distributed system. It is built following Clean Architecture principles to ensure high maintainability, testability, and decoupling.
+Este microservicio gestiona los usuarios, perfiles y eventos de autenticación dentro del sistema distribuido. Está construido siguiendo los principios de Clean Architecture para asegurar una alta mantenibilidad, testabilidad y desacoplamiento.
 
-## Architecture Layering
+## Capas de la Arquitectura
 
-The solution is organized into the following layers:
+La solución está organizada en las siguientes capas:
 
-1.  **Core.Domain**: Business entities and core interfaces. Contains the definition of the User entity and data access contracts.
-2.  **Core.Application**: Use cases and business logic. It handles the orchestration of data between the UI and the persistence layer.
-3.  **Infrastructure**: Implementation details. Includes MongoDB persistence and RabbitMQ messaging client.
-4.  **API**: Entry point of the application. Handles HTTP requests, middleware, and dependency injection.
+1.  **Core.Domain**: Entidades de negocio e interfaces principales. Contiene la definición de la entidad Usuario y los contratos de acceso a datos.
+2.  **Core.Application**: Casos de uso y lógica de negocio. Se encarga de la orquestación de datos entre la interfaz de usuario y la capa de persistencia.
+3.  **Infrastructure**: Detalles de implementación. Incluye la persistencia con MongoDB y el cliente de mensajería para RabbitMQ.
+4.  **API**: Punto de entrada de la aplicación. Gestiona las peticiones HTTP, middleware e inyección de dependencias.
 
-## Tech Stack
+## Tecnologías Utilizadas
 
 - **Framework**: .NET 9.0 (ASP.NET Core)
-- **Database**: MongoDB (NoSQL) for high-performance user profile storage.
-- **Messaging**: RabbitMQ as the message broker for event-driven synchronization.
-- **Documentation**: Scalar API Reference (OpenAPI 3.1) for modern and interactive documentation.
-- **Validation**: FluentValidation for robust input data integrity.
-- **Inversion of Control**: Built-in .NET Dependency Injection.
+- **Base de Datos**: MongoDB (NoSQL) para almacenamiento de perfiles de usuario de alto rendimiento.
+- **Mensajería**: RabbitMQ como agente de mensajes para sincronización basada en eventos.
+- **Documentación**: Scalar API Reference (OpenAPI 3.1) para una documentación moderna e interactiva.
+- **Validación**: FluentValidation para asegurar la integridad de los datos de entrada.
+- **Inyección de Dependencias**: Contenedor nativo de .NET.
 
-## Features
+## Características Principales
 
-- **Global Exception Handling**: Custom middleware to ensure consistent error responses.
-- **Event-Driven Communication**: Automatically publishes a `UserCreated` event to RabbitMQ upon new registrations.
-- **Clean Architecture**: Strict separation of concerns to support independent evolution of layers.
-- **High Performance**: Optimized MongoDB drivers and asynchronous processing.
+- **Manejo Global de Excepciones**: Middleware personalizado para asegurar respuestas de error consistentes.
+- **Comunicación Basada en Eventos**: Publica automáticamente un evento `UserCreated` en RabbitMQ al registrar nuevos usuarios.
+- **Arquitectura Limpia (Clean Architecture)**: Separación estricta de responsabilidades para permitir la evolución independiente de las capas.
+- **Alto Rendimiento**: Uso de controladores de MongoDB optimizados y procesamiento asíncrono.
 
-## Getting Started
+## Primeros Pasos
 
-### Prerequisites
+### Requisitos Previos
 
-- Docker and Docker Compose
-- .NET 9 SDK
+- Docker y Docker Compose
+- SDK de .NET 9
 
-### Local Infrastructure
+### Infraestructura Local
 
-Start the required services using Docker Compose:
+Inicie los servicios necesarios utilizando Docker Compose (desde el repositorio de infraestructura):
 
 ```bash
 docker compose up -d
 ```
 
-This will spin up:
+Esto levantará:
 
-- MongoDB at `localhost:27017`
-- RabbitMQ at `localhost:5672` (Management UI at `http://localhost:15672`)
+- MongoDB en `localhost:27017`
+- RabbitMQ en `localhost:5672` (Panel de administración en `http://localhost:15672`)
 
-### Running the Application
+### Ejecución de la Aplicación
 
-Execute the following command in the root directory:
+Ejecute el siguiente comando en el directorio raíz:
 
 ```bash
 dotnet run
 ```
 
-The service will be available at `http://localhost:5057`.
+El servicio estará disponible en `http://localhost:5057`.
 
-## Documentation
+## Documentación
 
-Interactive API documentation can be accessed at:
+La documentación interactiva de la API se puede consultar en:
 
 - **Scalar**: `http://localhost:5057/scalar/v1`
 
-## API Endpoints
+## Endpoints de la API
 
-- `GET /api/users`: Retrieve all users.
-- `GET /api/users/{id}`: Retrieve a specific user by GUID.
-- `POST /api/users`: Create a new user (triggers validation and events).
-- `GET /api/users/health`: Service health check.
-- `GET /api/users/status`: Service operational status.
+- `GET /api/users`: Recuperar todos los usuarios.
+- `GET /api/users/{id}`: Recuperar un usuario específico por su GUID.
+- `POST /api/users`: Crear un nuevo usuario (dispara validaciones y eventos).
+- `GET /api/users/health`: Verificación de salud del servicio.
+- `GET /api/users/status`: Estado operativo del servicio.

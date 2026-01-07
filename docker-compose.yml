@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+  # Microservicio de Usuarios
   users:
     build:
       context: .
@@ -11,60 +12,18 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__MongoConnection=mongodb://admin:Your_password123@mongodb:27017/UsersDb?authSource=admin
+      - ConnectionStrings__MongoConnection=mongodb://admin:Your_password123@users_mongodb:27017/UsersDb?authSource=admin
       - RabbitMQHost=rabbitmq
       - RabbitMQPort=5672
       - RabbitMQUser=admin
       - RabbitMQPassword=Your_password123
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+    external_links:
+      - users_mongodb
+      - shared_rabbitmq:rabbitmq
+    networks:
+      - microservices_net
     restart: unless-stopped
-
-  mongodb:
-    image: mongo:7.0
-    container_name: users_mongodb
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=Your_password123
-      - MONGO_INITDB_DATABASE=UsersDb
-    volumes:
-      - mongodb-data:/data/db
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  rabbitmq:
-    image: rabbitmq:3.13-management
-    container_name: users_rabbitmq
-    ports:
-      - "5672:5672" # AMQP protocol
-      - "15672:15672" # Management UI
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=Your_password123
-    volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  mongodb-data:
-    driver: local
-  rabbitmq-data:
-    driver: local
 
 networks:
-  default:
-    name: users_net
+  microservices_net:
+    external: true

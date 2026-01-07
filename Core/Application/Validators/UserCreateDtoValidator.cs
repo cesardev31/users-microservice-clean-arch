@@ -8,12 +8,12 @@ namespace testing.Core.Application.Validators
         public UserCreateDtoValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Name is required.")
-                .MaximumLength(100).WithMessage("Name cannot exceed 100 characters.");
+                .NotEmpty().WithMessage("El nombre es obligatorio.")
+                .MaximumLength(100).WithMessage("El nombre no puede exceder los 100 caracteres.");
 
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email is required.")
-                .EmailAddress().WithMessage("A valid email address is required.");
+                .NotEmpty().WithMessage("El correo electrónico es obligatorio.")
+                .EmailAddress().WithMessage("Se requiere una dirección de correo electrónico válida.");
         }
     }
 }
