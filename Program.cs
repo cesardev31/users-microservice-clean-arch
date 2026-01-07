@@ -10,7 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Servers = new List<Microsoft.OpenApi.Models.OpenApiServer>
+        {
+            new Microsoft.OpenApi.Models.OpenApiServer { Url = "http://localhost:5057" }
+        };
+        return Task.CompletedTask;
+    });
+});
 
 // Infrastructure - MongoDB
 builder.Services.AddSingleton<MongoDbContext>();
